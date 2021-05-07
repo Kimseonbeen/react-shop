@@ -1,0 +1,10 @@
+// 밑의 CSS처럼 모든페이지에 필요한 CSS reset 이런것들을 분리시켜놓고 필요한곳에 import
+
+body {
+    margin : 0;
+    color : red;
+}
+
+div {
+    box-sizing: border-box;
+}

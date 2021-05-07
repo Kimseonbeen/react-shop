@@ -1,25 +1,151 @@
-import logo from './logo.svg';
+/* eslint-disable */
+
 import './App.css';
+import { Navbar, Nav, NavDropdown, Button, Jumbotron } from 'react-bootstrap';
+import { useState } from 'react';
+import Data from './data.js';
+import Detail from './Detail.js';
+
+// Route를 만드러보자 (페이지를 나누자)
+// yarn add react-router-dom
+import { Link, Route, Switch } from 'react-router-dom';
+
+// yarn add styled-components
 
 function App() {
+
+  let [shoes, shoes변경] = useState(Data);
+
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
+
+      <Navbar bg="light" expand="lg">
+        <Navbar.Brand href="#home">Shoe Shop</Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          {/* ml-auto 오른쪽으로 위치 */}
+          <Nav className="mr-auto">
+
+            {/* 페이지 이동하는 버튼 만들기
+            - 일단 <Navbar>안의 버튼에 href 지우고
+            - <Link to="경로">버튼</Link>
+            React 문법 Link 경로 입력하면 이동 됨 */}
+            <Nav.Link> <Link to="/">Home</Link> </Nav.Link>
+            <Nav.Link> <Link to="/detail">Detail</Link> </Nav.Link>
+            <NavDropdown title="Dropdown" id="basic-nav-dropdown">
+              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
+            </NavDropdown>
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
+
+      {/* Switch 안에 담았더니 Route 들이 하나씩만 보임
+          하나만 매칭이 됨 중복 매칭을 허용하지 않겠다. */}
+      <Switch>
+
+        {/* Q. /detail 경로로 접속해도 /경로 내용이 보이는 이유?
+      - 매칭이 되는 것들은 다 보여줘서, /이 포함되는 /detail은 "/" 까지도 보여지게됌
+      - 그게 싫은경우 exact 속성 추가하면 경로가 정확히 일치할 떄만 보여줌 */}
+
+        <Route exact path="/">
+          <Jumbotron className="background">
+            <h1>20% season OFF</h1>
+            <p>
+              This is a simple hero unit, a simple jumbotron-style component for calling
+              extra attention to featured content or information.
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+            <p>
+              <Button variant="primary">Learn more</Button>
+            </p>
+          </Jumbotron>
+          {/* container : 좌우 여백을 이쁘게 잡아줌 */}
+          <div className="container">
+            <div className="row">
+              {
+                shoes.map((a, i) => {
+                  return (
+                    <Card shoes={shoes[i]} i={i}></Card>
+                  )
+                })
+              }
+
+              {/* <Card shoes={shoes[0]}></Card>
+          <Card shoes={shoes[1]}></Card>
+          <Card shoes={shoes[2]}></Card> */}
+
+              {/* <div className="col-md-4">
+            <img src="https://codingapple1.github.io/shop/shoes1.jpg"
+              width="100%" />
+            <h4>{ shoes[0].title }</h4>
+            <p>{ shoes[0].content } & { shoes[0].price }</p>
+          </div>
+          <div className="col-md-4">
+            <img src="https://codingapple1.github.io/shop/shoes2.jpg"
+              width="100%" />
+            <h4>상품명</h4>
+            <p>상품설명 & 가격</p>
+          </div>
+          <div className="col-md-4">
+            <img src="https://codingapple1.github.io/shop/shoes3.jpg"
+              width="100%" />
+            <h4>상품명</h4>
+            <p>상품설명 & 가격</p>
+          </div> */}
+            </div>
+
+          </div>
+        </Route>
+        
+        {/* /detail/:id
+        아무문자나 받겠다는 URL 작명법
+        1. 콜론 뒤에 맘대로 작성
+        2. 여러개 사용가능 */}
+        <Route path="/detail/:id">
+          <Detail shoes={ shoes } />
+        </Route>
+
+        <Route path="/:id">
+          <div>아무거나 적을때 이거 보여주셈</div>
+        </Route>
+
+      </Switch>
     </div>
   );
 }
+
+
+function Card(props) {
+  console.log("props : ", props);
+  return (
+    <div className="col-md-4">
+      {/* src="" 에다가 데이터 바인딩하려면?
+    src={} 이렇게하면 변수명 함수명 넣기 가능 */}
+      <img src={"https://codingapple1.github.io/shop/shoes" + (props.i + 1) + ".jpg"}
+        width="100%" />
+      <h4>{props.shoes.title}</h4>
+      <p>{props.shoes.content} & {props.shoes.price}</p>
+    </div>
+  )
+
+}
+
+// function Item(props) {
+//   props.map(function (shoes, i) {
+//     return (
+//       <div className="col-md-4">
+//         <img src="https://codingapple1.github.io/shop/shoes1.jpg"
+//           width="100%" />
+//         <h4>{props.shoes[i].title}</h4>
+//         <p>{props.shoes[i].content} & {props.shoes[i].price}</p>
+//       </div>
+//     )
+//   })
+// }
 
 export default App;

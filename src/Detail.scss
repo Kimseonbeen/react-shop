@@ -1,0 +1,59 @@
+// @import './reset.scss';  이런식으로 import 해서 사용
+
+// 이제 여기에 sass 문법 작성
+// SASS 문법
+// 1. 변수에 데이터를 저장해서 쓰자
+// 2. $변수명 : 변수에 넣을 값
+$메인칼라 : #ff0000;
+
+.red {
+    color: $메인칼라;
+}
+
+// 다른 색상의 alert UI가 필요하면?
+// SASS문법을 알면 조금 더 효율적임
+.my-alert2 {
+    // 4. extend
+    @extend .my-alert;  //.my-alert에 있는 모든 속성을 여기에 복사
+    background: #e9c95f;
+}
+
+// 5. @mixin
+// 함수는 @mixin / @include
+@mixin 함수() {
+    background: #eeeeee;
+    padding: 20px;
+    border-radius: 5px;
+    max-width: 500px;
+    width: 100%;
+    margin: auto;
+}
+
+.my-alert {
+    @include 함수()
+}
+
+.my-alert p {
+    margin-bottom: 0;
+}
+
+// 3. nesting 문법
+
+// div.container h4 {
+//     color: blue;
+// }
+
+// div.container p {
+//     color: green;
+// }
+
+// 위의 코드처럼 따로따로 작성할 필요없다
+// 셀렉터 대신 쓰는 nesting
+// div.container {
+//     h4 {
+//         color: blue;
+//     }
+//     p {
+//         color: green;
+//     }
+// }
