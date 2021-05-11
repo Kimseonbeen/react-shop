@@ -10,14 +10,6 @@ $메인칼라 : #ff0000;
     color: $메인칼라;
 }
 
-// 다른 색상의 alert UI가 필요하면?
-// SASS문법을 알면 조금 더 효율적임
-.my-alert2 {
-    // 4. extend
-    @extend .my-alert;  //.my-alert에 있는 모든 속성을 여기에 복사
-    background: #e9c95f;
-}
-
 // 5. @mixin
 // 함수는 @mixin / @include
 @mixin 함수() {
@@ -32,6 +24,15 @@ $메인칼라 : #ff0000;
 .my-alert {
     @include 함수()
 }
+
+// 다른 색상의 alert UI가 필요하면?
+// SASS문법을 알면 조금 더 효율적임
+.my-alert2 {
+    // 4. extend
+    @extend .my-alert;  //.my-alert에 있는 모든 속성을 여기에 복사
+    background: #bbeb7e;
+}
+
 
 .my-alert p {
     margin-bottom: 0;
