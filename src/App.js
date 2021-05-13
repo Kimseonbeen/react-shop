@@ -11,6 +11,8 @@ import axios from 'axios';
 // yarn add react-router-dom
 import { Link, Route, Switch } from 'react-router-dom';
 
+import Cart from './Cart.js';
+
 // context 만들기
 // 1. React.createContext()로 범위생성
 // 2. 같은 값을 공유할 HTML을 범위로 싸매기
@@ -18,6 +20,10 @@ import { Link, Route, Switch } from 'react-router-dom';
 let 재고context = React.createContext();
 
 // yarn add styled-components
+
+// yarn add redux react-redux
+// redux 쓰는 이유
+// 1. .props 없이 모든 컴포넌트가 state를 갖다쓰기 가능
 
 function App() {
 
@@ -150,9 +156,14 @@ function App() {
           <Detail shoes={shoes} 재고={재고} 재고변경={재고변경} />
         </Route>
 
+        <Route path="/cart">
+          <Cart></Cart>
+        </Route>
+
         <Route path="/:id">
           <div>아무거나 적을때 이거 보여주셈</div>
         </Route>
+
 
       </Switch>
     </div>

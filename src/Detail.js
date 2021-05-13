@@ -4,7 +4,13 @@ import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router";
 // yarn add styled-components
 import styled from 'styled-components';
+import { Navbar, Nav, NavDropdown, Button, Jumbotron } from 'react-bootstrap';
 import './Detail.scss';
+
+// 컴포넌트 등장 / 업데이트시 transition 쉽게 줄 수 있음
+import { CSSTransition } from "react-transition-group";
+import { connect } from 'react-redux';  // connect import
+
 
 // yarn add node-sass
 // sass : CSS를 프로그래밍언어스럽게 작성가능한 Preprocessor
@@ -62,6 +68,9 @@ function Detail(props) {
   let [alert, alert변경] = useState(true);
 
   let [inputData, inputData변경] = useState('');
+
+  let [누른탭, 누른탭변경] = useState(0);
+  let [스위치, 스위치변경] = useState(false);
 
   useEffect(() => {
     //2초 후에 저거 alert 창을 안보이게 해주셈
@@ -126,7 +135,10 @@ function Detail(props) {
           <button className="btn btn-danger" onClick={() => {
             // 하위 컴포넌트가 상위 컴포넌트 state변경하려면 state 변경함수 씁니다.
             // 그게 상위 컴포넌트에 있으면 변경함수도 props로 전송해서 쓰셈
-            props.재고변경([9, 11, 12])   
+            props.재고변경([9, 11, 12]);
+            props.dispatch({type : '항목추가', payload : { id : 2, name : '새로운상품', quan : 1}});
+            // 개발환경에서 페이지 이동시 강제새로고침 안되게 하려면 history.push
+            history.push('/cart');
           }}>주문하기</button>
           &nbsp;
           <button className="btn btn-danger" onClick={() => {
@@ -135,15 +147,60 @@ function Detail(props) {
           }}>뒤로가기</button>
         </div>
       </div>
+      {/* mt-5 bootstrap이 제공하는 기본 class margin 5px */}
+      <Nav className="mt-5" variant="tabs" defaultActiveKey="/link-0">
+        <Nav.Item>
+          {/* 버튼들 마다 유니크한 eventKey 부여하기 */}
+          <Nav.Link eventKey="link-0" onClick={() => { 스위치변경(false); 누른탭변경(0)}}>Active</Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link eventKey="link-1" onClick={() => { 스위치변경(false); 누른탭변경(1)}}>Option 2</Nav.Link>
+        </Nav.Item>
+      </Nav>
+      
+      {/* 1. <CSSTransition>으로 애니메이션 필요한 곳 감싸기 */}
+      {/* in = 애니메이션 동작 스위치 true시 동작 / classNames = 작명 / timeout = 시간 */}
+      <CSSTransition in={스위치} classNames="wow" timeout={ 500 }>
+        <TabContent 누른탭={ 누른탭 } 스위치변경={스위치변경}/>
+      </CSSTransition>
+
+
     </div>
   )
 }
 
+function TabContent(props) {
+  // 얘가 등장하거나 업데이트 될 때 스위치 true
+  useEffect(() => {
+    props.스위치변경(true);
+  })
+
+  if(props.누른탭 === 0 ) {
+    return <div>0번쨰 내용입니다</div>
+  } else if(props.누른탭 === 1) {
+    return <div>1번쨰 내용입니다</div>
+  } else if(props.누른탭 === 2) {
+    return <div>2번쨰 내용입니다</div>
+  }
+}
+
 function Info(props) {
   return (
-    <p>재고 : { props.재고[0] }</p>
+    <p>재고 : { props.재고[0]}</p>
   )
 }
 
+// 다른곳에 dispatch 사용시 함수와 밑의 export default 필요
+function state를props화(state) {
+  return {
+      // store 데이터를 props로 등록하기
+      // state라는 이름의 props로 바꿔주셈
+      state: state.reducer,
+      alert열렸니 : state.reducer2
+  }
 
-export default Detail;
+}
+export default connect(state를props화)(Detail)
+
+
+//export default Detail;
