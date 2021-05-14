@@ -9,7 +9,7 @@ import axios from 'axios';
 
 // Route를 만드러보자 (페이지를 나누자)
 // yarn add react-router-dom
-import { Link, Route, Switch } from 'react-router-dom';
+import { Link, Route, Switch, useHistory } from 'react-router-dom';
 
 import Cart from './Cart.js';
 
@@ -94,6 +94,7 @@ function App() {
                 {
                   shoes.map((a, i) => {
                     return (
+                      // <컴포넌트>엔 onClick 부여 X
                       <Card shoes={shoes[i]} i={i} key={i}></Card>
                     )
                   })
@@ -170,16 +171,17 @@ function App() {
   );
 }
 
-
+// Onclick <Card>에 달지말고 Card 컴포넌트 안에 다세요. 
 function Card(props) {
 
   // useContext 훅으로 공유된 값 사용하기
   // useContext(범위이름)로 공유된 값 사용하기
   // 간단한 데이터 전송은 props 사용하기
   let 재고 = useContext(재고context);
+  let history = useHistory();
   console.log("props : ", props);
   return (
-    <div className="col-md-4">
+    <div className="col-md-4" onClick={() => { history.push('/detail/' + props.shoes.id) }}>
       {/* src="" 에다가 데이터 바인딩하려면?
     src={} 이렇게하면 변수명 함수명 넣기 가능 */}
       <img src={"https://codingapple1.github.io/shop/shoes" + (props.i + 1) + ".jpg"}

@@ -136,7 +136,7 @@ function Detail(props) {
             // 하위 컴포넌트가 상위 컴포넌트 state변경하려면 state 변경함수 씁니다.
             // 그게 상위 컴포넌트에 있으면 변경함수도 props로 전송해서 쓰셈
             props.재고변경([9, 11, 12]);
-            props.dispatch({type : '항목추가', payload : { id : 2, name : '새로운상품', quan : 1}});
+            props.dispatch({type : '항목추가', 데이터 : { id : 찾은상품.id, name : 찾은상품.title, quan : 1}});
             // 개발환경에서 페이지 이동시 강제새로고침 안되게 하려면 history.push
             history.push('/cart');
           }}>주문하기</button>
@@ -163,6 +163,8 @@ function Detail(props) {
       <CSSTransition in={스위치} classNames="wow" timeout={ 500 }>
         <TabContent 누른탭={ 누른탭 } 스위치변경={스위치변경}/>
       </CSSTransition>
+
+      <App></App>
 
 
     </div>
@@ -192,12 +194,35 @@ function Info(props) {
 
 // 다른곳에 dispatch 사용시 함수와 밑의 export default 필요
 function state를props화(state) {
+
   return {
       // store 데이터를 props로 등록하기
       // state라는 이름의 props로 바꿔주셈
       state: state.reducer,
       alert열렸니 : state.reducer2
   }
+
+}
+
+function App(){
+  let [count, setCount] = useState(0);
+  let [age, setAge] = useState(20);
+
+  useEffect(() => {
+    if (count != 0 && count< 3) {
+      setAge(age + 1)
+    }
+  }, [count])
+
+  return (
+    <div>
+      <div>안녕하십니까 전 {age}</div>
+      <button onClick={() => {
+        setCount(count + 1);
+        console.log("count : ", count);
+      }}>누르면한살먹기</button>
+    </div>
+  )
 
 }
 export default connect(state를props화)(Detail)

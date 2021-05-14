@@ -30,9 +30,9 @@ function Cart(props) {
                                     <td>{a.quan}</td>
                                     {/* 데이터 수정요청을 할 땐 props.dispatch() 
                                         props.dispatch({ type: ??? }) */}
-                                    <td><button onClick={() => { props.dispatch({type : '수량증가' })}}>
+                                    <td><button onClick={() => { props.dispatch({type : '수량증가', 데이터 : a.id })}}>
                                         +</button>
-                                        <button onClick={() => { props.dispatch({type : '수량감소'})}}>
+                                        <button onClick={() => { props.dispatch({type : '수량감소', 데이터 : a.id })}}>
                                         -</button></td>
                                 </tr>
                             )

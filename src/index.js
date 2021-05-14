@@ -44,21 +44,34 @@ function reducer2(state = alert초기값, 액션) {
 // state 데이터 관리가 용이합니다 (일명 상태관리)
 // reducer 넘 길면 다른 js파일로 export / import 해서 사용
 function reducer(state = 초기값, 액션) {
+  console.log("액션 : ", 액션);
   if( 액션.type === '항목추가') {
-    console.log(액션);
-    let copy = [...state];
-    copy.push(액션.payload);
-    return copy;
+
+    // state안에 id : 액션.데이터인게 있냐?
+    // findIndex : array안에서 원하는 데이터 찾아주는 함수
+    // 조건식이 맞으면 몇번째 있는지를 리턴 // 0, 1, 2
+    let found = state.findIndex((a) => { return a.id ===  액션.데이터.id })
+
+    if(found >= 0) {
+      let copy = [...state];
+      copy[found].quan++;
+      return copy;
+    } else {
+      let copy = [...state];
+      copy.push(액션.데이터);
+      return copy;
+    }
+
 
   } else if( 액션.type === '수량증가' ) {
     
     let copy = [...state];  // 복사본 만들고
-    copy[0].quan++;
+    copy[액션.데이터].quan++;
     return copy // 리턴
   
   } else if( 액션.type === '수량감소') {
     let copy = [...state];
-    copy[0].quan--;
+    copy[액션.데이터].quan--;
     return copy
   // 요청이 들어오지 않으면 기본값 리턴
   } else {
